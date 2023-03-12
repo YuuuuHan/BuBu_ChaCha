@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}個人資料{% endblock %}
+{% load static %}
+{% block content %}
+    <div class="container mt-2" style="padding-top: 120px;">
+        <h1 class="text-center">
+            <b>訂單歷史紀錄</b>
+        </h1>
+        {% for carpool in  object_list.all %}
+            <div class="row m-3 p-3 border shadow rounded">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <dt>
+                                時間：<b>{{ carpool.date }}{{ carpool.time }}</b>
+                            </dt>
+                        </div>
+                        <div class="col order-5">
+                            <dt>
+                                目的地：<b>{{ carpool.arrival }}</b>
+                            </dt>
+                        </div>
+                        <div class="col order-1">
+                            <dt>
+                                出發地：<b>{{ carpool.departure }}</b>
+                            </dt>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <dt>
+                                司機：<b>{{ carpool.driver.profile.name }}</b>
+                            </dt>
+                        </div>
+                        <div class="col order-5"></div>
+                        <div class="col order-1">
+                            <dt>
+                                平均每人價格：<b>{{ carpool.avg_fare }}</b>
+                            </dt>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

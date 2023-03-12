@@ -1,0 +1,177 @@
+<div id="main" hx-swap-oob="true">
+{% extends "base.html" %}
+{% block content %}
+
+{% load static %}
+<script src="{% static 'js/index.js' %}"></script>
+<script>
+  document.body.addEventListener('htmx:configRequest', (event) => {
+    event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+  })
+</script>
+
+<body style="padding-top: 120px;">
+
+<div class="container pt-2">
+  <div class="row">
+    <div class="col-sm-3 border-end">
+      <h2 class="text-center">司機資訊</h2>
+      <p size="1h-10"></p>
+        <img src="{% static 'image/driver.png' %}" width="100" style="display:block; margin:auto;" /> 
+        <p size="1h-10"></p>
+        <dl class="row">
+          <dt class="col-sm-4 text-center"><h6><b>司機</b></h6></dt>
+          {% if carpool.driver %} {{ carpool.driver }} 
+          {% else %} 暫無司機 
+          {% endif %}
+          <!-- <dd class="col-sm-5 text-center"><h6>賴承緒</h6></dd> -->
+        </dl>
+        <dl class="row">
+          <dt class="col-sm-4 text-center"><h6><b>電話</b></h6></dt>{{ carpool.driver.profile.phone_num }}
+          <!-- <dd class="col-sm-5 text-center"><h6>0970400322</h6></dd> -->
+        </dl>
+        <dl class="row">
+          <dt class="col-sm-4 text-center"><h6><b>車牌</b></h6></dt>{{ carpool.driver.car.plate }}
+
+        </dl>
+        <dl class="row">
+          <dt class="col-sm-4 text-center" ><h6><b>評價</b></h6></dt>
+          <dt class="col-sm-8"  >
+          <span class="yellow_star" >
+            {% for _ in ""|rjust:5 %}
+                        {% if forloop.counter0 < carpool.driver.score %}
+                            <!-- 滿星星 -->
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="16"
+                                 height="16"
+                                 fill="currentColor"
+                                 class="bi bi-star-fill"
+                                 viewBox="0 0 16 16">
+                                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                            </svg>
+                        {% else %}
+                            <!-- 空星星 -->
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="16"
+                                 height="16"
+                                 fill="currentColor"
+                                 class="bi bi-star"
+                                 viewBox="0 0 16 16">
+                                <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                            </svg>
+                        {% endif %}
+                    {% endfor %}
+          </span>
+        </dt>
+      </dl>
+
+      {% if carpool.driver.username == user.username %}
+        <div class="text-center" id="carpool-change-status">
+          {% if carpool.status == 'w' %}
+            <button hx-patch="{% url 'app:carpool_change_status' pk=carpool.pk %}"
+                    hx-target="#carpool-change-status"
+                    hx-swap="innerHTMl"
+                    class="btn btn-outline-dark"
+                    style="width:180px">出發</button>
+          {% elif carpool.status == 'd' %}
+            <button hx-patch="{% url 'app:carpool_change_status' pk=carpool.pk %}"
+                    hx-target="#carpool-change-status"
+                    hx-swap="innerHTMl"
+                    class="btn btn-outline-dark"
+                    style="width:180px">抵達</button>
+          {% else %}
+            <button disabled
+                    class="btn btn-outline-dark"
+                    style="width:180px">已抵達</button>
+          {% endif %}
+        </div>
+      {% endif %}
+
+  </div>
+  <div class="col-sm-9">
+    <div class="container">
+
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            <strong>{{ message }}</strong> 
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+          </div>
+          {% endfor %}
+      </ul>
+      {% endif %}
+
+      <dl class="row">
+        <dt class="col-sm-6 text-center"><h1>{{ carpool.departure }}</h1></dt>
+        <dt class="col-sm-1 text-center"><h1>➜</h1></dt>
+        <dd class="col-sm-5 text-center"><h1>{{ carpool.arrival }}</h1></dd>
+      </dl>
+      <hr style="border:0.5px solid #CFCFCF;"/>
+      <!-- 時間 -->
+        <div class="row m-3 p-3 border shadow rounded">
+          <div class="col-sm-1"></div>
+          <div class="col-sm-2 text-center">
+            <img src="{% static 'image/clock.png' %}" style='width:50px;'>
+          </div>
+          <div class="col-sm-3 text-center align-self-center">
+            <h4>出發時間</h4>
+          </div>
+          <div class="col-sm-5 text-center align-self-center">
+            <h4><b>{{ carpool.date|date:'Y-m-d' }}</b>  &nbsp; [{{ carpool.time|time:"H:i" }}] </h4>
+          </div>
+        <div class="col-sm-1"></div>
+      </div>
+      <!-- 乘客列表 -->
+      <div class="row m-3 p-3 border shadow rounded">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-2 text-center">
+          <img src="{% static 'image/passenger.png' %}" style='width:50px;'>
+        </div>
+        <div class="col-sm-3 text-center align-self-center">
+          <h4>乘客列表</h4>
+        </div>
+        <div class="col-sm-5 text-center align-self-center">
+          <h4><b>
+            {% for student in carpool.passengers.all %}
+              {{ student }}
+              {% if forloop.counter < carpool.passengers.count %}
+                、
+              {% endif %}
+            {% endfor %}
+          </b></h4>
+        </div>
+      </div>
+    <div class="col-sm-1"></div>
+    <!-- 平均每人價格 -->
+    <div class="row m-3 p-3 border shadow rounded">
+      <div class="col-sm-1"></div>
+      <div class="col-sm-2 text-center">
+        <img src="{% static 'image/money.png' %}" style='width:50px;'>
+      </div>
+      <div class="col-sm-3 text-center align-self-center">
+        <h4>平均價格</h4>
+      </div>
+      <div class="col-sm-5 text-center align-self-center">
+        <h4><b>{{ carpool.avg_fare }}</b></h4>
+      </div>
+    <div class="col-sm-1">
+    </div>
+    </div>
+    
+    <form action="" method="post">
+      {% csrf_token %}
+      {% comment %} <button type="submit" class="btn btn-outline-danger rounded-pill position-absolute end-0 translate-middle-x"><b>+</b></button> {% endcomment %}
+      {% if user.is_authenticated %}
+        <button type="submit" name="leave" class="btn btn-outline-secondary position-absolute translate-middle-x"><b>退出</b></button>
+        <button type="submit" name="join" class="btn btn-outline-danger position-absolute end-0 translate-middle-x"><b>加入</b></button>
+
+      {% endif %}
+    </form>
+
+    <div hx-get="{% url 'app:carpool_update_status' pk=carpool.pk %}" hx-trigger="load, every 1s" style="display: none"></div>
+</div>
+{% endblock %}
+</div>
+
+ 

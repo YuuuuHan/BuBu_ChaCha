@@ -1,0 +1,102 @@
+{% for carpool in carpools %}
+    <div class="col-sm-6">
+        <a href="{{ carpool.get_absolute_url }}"
+           class="card"
+           style="margin: 10px">
+            <div class="card-body text-center">
+                <h5 class="card-title text-center" style="display: inline;">{{ carpool.departure }}</h5>
+                <svg xmlns="http://www.w3.org/2000/svg"
+                     width="16"
+                     height="16"
+                     fill="currentColor"
+                     class="bi bi-arrow-right"
+                     viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8z"/>
+                </svg>
+                <h5 class="card-title text-center" style="display: inline;">{{ carpool.arrival }}</h5> 
+            </div>
+            <!--已加入 開始-->
+            <span style="text-align: right; color: red; padding-right: 10px;">
+              {% if carpool.is_user_in %}
+              已加入
+              {% else %}
+              　
+              {% comment %}
+              上面有一個空格不能刪
+              {% endcomment %}
+              {% endif %}
+            </span>
+            <!--已加入 結束-->
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <span>出發日期：</span>
+                    <span>{{ carpool.date|date:"Y-m-d" }}</span>
+                </li>
+                <li class="list-group-item">
+                    <span>出發時間：</span>
+                    <span>{{ carpool.time|time:"H:i" }}</span>
+                </li>
+                <li class="list-group-item">
+                    <span>司機車牌號碼：</span>
+                    <span>
+                        {% if carpool.driver %}
+                            {{ carpool.driver.car.plate }}
+                        {% else %}
+                            暫無司機
+                        {% endif %}
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span>平均每人價格：</span>
+                    <span>{{ carpool.avg_fare }}</span>
+                </li>
+                <li class="list-group-item">
+                    <span>目前加入人數：</span>
+                    <span>{{ carpool.passengers.count }}
+                        {% if carpool.driver %}/{{ carpool.driver.car.capacity }}{% endif %}
+                    </span>
+                </li>
+                <li class="list-group-item">
+                    <span>司機評價：</span>
+                    
+                        {% if carpool.driver and carpool.driver.score %}
+                        <span class="yellow_star">
+                            {% for _ in ""|rjust:5 %}
+                                {% if forloop.counter0 < carpool.driver.score %}
+                                    <!-- 滿星星 -->
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        fill="currentColor"
+                                        class="bi bi-star-fill"
+                                        viewBox="0 0 16 16">
+                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+                                    </svg>
+                                {% else %}
+                                    <!-- 空星星 -->
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        fill="currentColor"
+                                        class="bi bi-star"
+                                        viewBox="0 0 16 16">
+                                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.565.565 0 0 0-.163-.505L1.71 6.745l4.052-.576a.525.525 0 0 0 .393-.288L8 2.223l1.847 3.658a.525.525 0 0 0 .393.288l4.052.575-2.906 2.77a.565.565 0 0 0-.163.506l.694 3.957-3.686-1.894a.503.503 0 0 0-.461 0z"/>
+                                    </svg>
+                                {% endif %}
+                            {% endfor %}
+                        </span>
+                        {% elif carpool.driver and not carpool.driver.score %}
+                        <span>
+                            暫無評論
+                        </span>
+                        {% else %}
+                        <span>
+                            暫無司機
+                        </span>
+                        {% endif %}
+                    
+                </li>
+            </ul>
+        </a>
+    </div>
+{% endfor %}

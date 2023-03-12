@@ -1,0 +1,55 @@
+.row{
+    
+    width: 100%;
+    
+}
+
+
+
+/* .wrapper{
+  display: inline-flex;
+  background: #fff;
+  height: 100px;
+  width: 400px;
+  align-items: center;
+  justify-content: space-evenly;
+  border-radius: 5px;
+  padding: 20px 15px;
+  box-shadow: 5px 5px 30px rgba(0,0,0,0.2);
+} */
+
+
+.qty {
+    width: 40px;
+    height: 35px;
+    font-size: 20px;
+    text-align: center;
+    /* align-items: center; */
+    /* justify-content: center;   */
+    border: 0;
+    background-color: #fff;
+    border: 1px solid #aaa; 
+    
+  }
+  
+  
+  input.qtyplus {
+    width: 30px;
+    height: 35px;
+    border: 1px solid #aaa;
+    background: #b0a697;
+    color: #fff;
+    
+  }
+  
+  input.qtyminus {
+    width: 30px;
+    height: 35px;
+    border: 1px solid #aaa;
+    background: #b0a697;
+    color: #fff;
+  }
+
+  .row {
+    align-items: center;
+  }

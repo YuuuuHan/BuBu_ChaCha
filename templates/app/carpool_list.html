@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+{% block content %}
+    {% load static %}
+    {% load widget_tweaks %}
+    <link rel="stylesheet" href="{% static 'css/star.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.2.min.js"
+            integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA="
+            crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js"
+            type="text/javascript"></script>
+    <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css"
+          rel="stylesheet"
+          type="text/css"/>
+    <script src="{% static 'js/index.js' %}"></script>
+    <script src="{% static 'js/group_new.js' %}"></script>
+    <body style="padding-top: 120px;padding-bottom: 50px;">
+        {% if user.is_student %}
+        <button type="button"
+                hx-get="{% url "app:carpool_create" %}"
+                hx-target="#dialog"
+                class="btn btn-outline-danger rounded-pill newgroup"
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModal"
+                style="width:70px;height:70px;font-size:30px;">
+            +
+        </button>
+        {% endif %}
+        <div id="modal"
+             class="modal fade"
+             tabindex="-1"
+             aria-labelledby="exampleModalLabel">
+            <div id="dialog" class="modal-dialog" hx-target="this"></div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-3 border-end">
+                    <h2 class="text-center">
+                        共乘團篩選
+                    </h1>
+                    <form hx-get="{% url 'app:carpools_region' %}" hx-target="#filter-target">
+                        <div class="form-group">
+                            <label for="date">日期選擇</label>
+                            {% render_field form.date class="form-control id-form-date" %}
+                        </div>
+                        <div class="form-group">
+                            <label for="time">時間選擇</label>
+                            {% render_field form.time class="form-control id-form-time" %}
+                        </div>
+                        <div class="form-group">
+                            <label for="carfare">出發地和目的地</label>
+                            {% render_field form.carfare class="form-control" %}
+                        </div>
+                        <div class="form-group">
+                            <label for="already_in">目前已加入人數</label>
+                            {% render_field form.already_in class="form-control" %}
+                        </div>
+                        <div class="form-group form-check">
+                            {% render_field form.has_driver class="form-check-input" %}
+                            <label class="form-check-label" for="{{ form.has_driver.id_for_label }}">已有司機承接</label>
+                        </div>
+                        <div class="form-group form-check">
+                            {% render_field form.has_vacancy class="form-check-input" %}
+                            <label class="form-check-label" for="{{ form.has_vacancy.id_for_label }}">尚有空位</label>
+                        </div>
+                        <div class="pt-3">
+                            <button type="submit" class="form-control btn btn-outline-dark" class='sure'>確定</button>
+                        </div>
+                    </form>
+                    {% if user.is_authenticated %}
+                        <hr/>
+                        <button hx-get="{% url 'app:carpools_region' %}?filter_is_user_in=True" hx-target="#filter-target" class="form-control btn btn-outline-danger" class='sure'>顯示已加入之共乘團</button>
+                    {% endif %}
+                </div>
+                <!-- carpool-->
+                <div class="col-sm-9">
+                    <div class="container">
+                        <div class="row"
+                             id="filter-target"
+                             hx-get="{% url "app:carpools_region" %}"
+                             hx-trigger="load, carpoolListChanged from:body">
+                        </div>
+                    </div>
+                </div>
+                <script src="{% static 'js/dialog.js' %}"></script>
+            {% endblock %}

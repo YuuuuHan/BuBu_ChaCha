@@ -1,0 +1,41 @@
+{% load widget_tweaks %}
+{% block content %}
+<div class="form-group">
+    <form hx-post="{{ request.path }}" class="modal-content">
+        {% csrf_token %}
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">發起共乘團</h2>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <label for="origin" class="form-control">
+                    出發地和目的地：
+                    {{ form.carfare }}
+                </label>
+                <br>
+                <label for="time" class="form-control">
+                    日期選擇：
+                    {{ form.date }}
+                </label>
+                <br>
+                <label for="time" class="form-control">
+                    時間選擇：
+                    {{ form.time }}
+                </label>
+                <br>
+                <label for="sitting" class="form-control">
+                    最小搭乘人數：
+                    {{ form.lower_passengers }}
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-dark">確定</button>
+            </div>
+        </form>
+    {% endblock %}
+
+</div>

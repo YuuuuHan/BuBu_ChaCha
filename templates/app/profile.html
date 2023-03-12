@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}個人資料{% endblock %}
+{% load static %}
+{% block content %}
+    {% load widget_tweaks %}
+    <link rel="stylesheet" href="{% static 'css/student_profile.css' %}">
+    <link rel="stylesheet" href="{% static 'css/driver_profile.css' %}">
+    <div class="container right-panel-active" id="container">
+        <div class="form-container sign-up-container">
+            <form action="" method="post">
+                <h2>個人資料</h2>
+                {% csrf_token %}
+                {% render_field profile_form.name placeholder="姓名" %}
+                {% render_field profile_form.phone_num placeholder="手機號碼" %}
+                {{ profile_form.phone_num.errors }}
+                {{ profile_form.sex }}
+                {% if user.is_student %}
+                    {% render_field profile_form.nickname placeholder="暱稱" %}
+                {% else %}
+                    {% render_field profile_form.company placeholder="隸屬公司" %}
+                    {% render_field profile_form.cert_code placeholder="登記證證號" %}
+                    {{ profile_form.cert_code.errors }}
+                    {% render_field profile_form.cert_expirydate placeholder="登記證到期日" %}
+                    {% render_field car_form.type placeholder="車輛種類" %}
+                    {% render_field car_form.capacity placeholder="最大載客人數" %}
+                    {% render_field car_form.plate placeholder="車牌號碼" %}
+                    {{ car_form.plate.errors }}
+                {% endif %}
+                <button type="submit">確認修改</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left ">
+                    <h1>個人資料</h1>
+                    <p>查看與修改</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/profile.js' %}"></script>
+{% endblock %}

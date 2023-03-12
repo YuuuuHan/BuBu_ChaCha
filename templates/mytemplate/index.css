@@ -1,0 +1,168 @@
+/* 日期 */
+
+/*有司機的共乘團星星是黃色(yellow_star)*/
+.yellow_star{color: #FBE251;}
+/*沒有司機的共乘團星星是灰色(gray_star)*/
+.gray_star{color: #91989F;}
+
+/*超連結取消底色、字體顏色設定為黑色*/
+a {
+    text-decoration: none;
+}
+a:link, a:visited {
+    color: black;
+}
+a:hover {
+    color: black;
+}
+/*乘客人數增減css*/
+.qty {
+  width: 150px;
+  height: 35px;
+  text-align: center;
+  border: 0;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+}                   
+input.qtyplus {
+  width: 50px;
+  height: 35px;
+  border: 1px solid #aaa;
+  background: #f8f8f8;
+}
+input.qtyminus {
+  width: 50px;
+  height: 35px;
+  border: 1px solid #aaa;
+  background: #f8f8f8;
+}
+
+/* 確認鍵Button */
+.sure{
+  justify-content: center;
+}
+
+.group_new_qty {
+  width: 385px;
+  height: 35px;
+  text-align: center;
+  border: 0;
+  border-top: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
+}
+                    
+input.group_new_qtyplus {
+  width: 35px;
+  height: 35px;
+  border: 1px solid #aaa;
+  background: #f8f8f8;
+}
+            
+input.group_new_qtyminus {
+  width: 35px;
+  height: 35px;
+  border: 1px solid #aaa;
+  background: #f8f8f8;
+}
+
+/*懸浮按鈕*/
+.newgroup{
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index:9999;
+}
+
+
+
+/*nav & footer*/
+.logout {
+  background-color: #b0a697;
+  border: none;
+  color:white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  text-align: center;
+  font-size: 16px;
+  margin: 4px 2px;
+  opacity: 0.6;
+  transition: 0.3s;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
+}
+.logout:hover {opacity: 1;background-color:#fbeed8;color:black}
+
+
+.pagelink {
+  background-image: linear-gradient(
+    to right,
+    #7D9D9C,
+    #7D9D9C 50%,
+    #000 50%
+  );
+  background-size: 200% 100%;
+  background-position: -100%;
+  display: inline-block;
+  padding: 5px 0;
+  position: relative;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s ease-in-out;
+  font-size: 20px;
+}
+
+.pagelink:before{
+  content: '';
+  background: #7D9D9C;
+  display: block;
+  position: absolute;
+  bottom: -3px;
+  left: 0;
+  width: 0;
+  height: 3px;
+  transition: all 0.3s ease-in-out;
+}
+
+.pagelink:hover {
+ background-position: 0;
+}
+
+.pagelink:hover::before{
+  width: 100%;
+}
+
+
+
+.offcanvas.show {
+  transform: none;
+  width:250px;
+}
+
+
+
+.nav-link img,svg {
+vertical-align: middle;
+margin-right: 5px;
+width:15px;
+}
+.nav-link text{
+  font-size:20px;
+}
+
+nav{
+  background-color: #FBF0D8;
+}
+
+footer{  
+background: #FBF0D8;
+height: 30px;
+  text-align: center;
+  font-size: 15px;
+  
+}
+
+footer p{
+  line-height: 30px;
+  color:black;
+}

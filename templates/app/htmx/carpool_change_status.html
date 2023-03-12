@@ -1,0 +1,17 @@
+{% if carpool.status == 'w' %}
+  <button hx-patch="{% url 'app:carpool_change_status' pk=carpool.pk %}"
+          hx-target="#carpool-change-status"
+          hx-swap="innerHTMl"
+          class="btn btn-outline-dark"
+          style="width:180px">出發</button>
+{% elif carpool.status == 'd' %}
+  <button hx-patch="{% url 'app:carpool_change_status' pk=carpool.pk %}"
+          hx-target="#carpool-change-status"
+          hx-swap="innerHTMl"
+          class="btn btn-outline-dark"
+          style="width:180px">抵達</button>
+{% else %}
+  <button disabled
+          class="btn btn-outline-dark"
+          style="width:180px">已抵達</button>
+{% endif %}
